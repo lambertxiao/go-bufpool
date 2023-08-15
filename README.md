@@ -2,6 +2,11 @@
 
 ## Introduction
 
+bufpool is a simple buffer pool implementation, which is used to improve memory utilization and performance. It provides a configurable-size cache pool for repeatedly allocating and recycling memory blocks of the same size.
+
+The memory pool pre-allocates a certain number of memory blocks and stores them in a stack, avoiding frequent memory allocation and deallocation operations.
+
+bufpool uses a lock-free structure to achieve concurrent safety of data access, avoiding the performance overhead of traditional lock mechanisms. It utilizes atomic operations and lock-free algorithms to ensure the correctness and efficiency of concurrent access. bufpool uses the Golang 1.20's arena for memory allocation.
 
 ## Usage
 
@@ -16,7 +21,7 @@ import "github.com/lambertxiao/go-bufpool"
 1. Create a new memory pool:
 
 ```go
-pool := bufpool.NewGobufpool(uint, func() interface{}) *Gobufpool // Pass the appropriate size and generation function according to actual needs
+pool := bufpool.NewBufPool(8, 1024 * 1024) // Pass the appropriate size and generation function according to actual needs
 ```
 
 2. Retrieve a memory block from the memory pool:
